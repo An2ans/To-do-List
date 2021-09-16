@@ -1,20 +1,67 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
+
 // const request = require("request");
 
 const app = express();
-var newItems = [];
 
 app.use(express.static("public"));
 //Esto es para que funcione el ejs despues de instalarlo en el npm, ponlo debajo de app
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({extended: true}));
+mongoose.connect("mongodb://localhost:27017/todolistDB");
+
+const itemsSchema ={
+  name:String
+};
+
+const Item = mongoose.model("Item", itemsSchema);
+
+const defItem1 = new Item({
+  name: "Welcome to your To-do List!"
+});
+
+const defItem2 = new Item({
+  name: "Click on the + buttom to add a new item."
+});
+
+const defItem3 = new Item({
+  name: "<--- Hit this to delete an item. "
+})
+
+const defItems = [defItem1, defItem2, defItem3];
+
+
 
 app.post("/", function(req, res){
-  var newIten = req.body.newInput;
-  newItems.push(newIten);
+
+  const newItemName = req.body.newInput;
+  var newItem = new Item({
+    name: newItemName
+  });
+
+  newItem.save(function(err,Item){
+    if(err){
+      console.log(err);
+    }else{
+      console.log("New item " + newItemName + " successfully added.");
+    }
+  });
   res.redirect("/");
+});
+
+app.post("/delete", function(req, res){
+const checkedItemId = req.body.checkbox;
+Item.findByIdAndRemove(checkedItemId, function(err){
+  if(err){
+    console.log(err);
+  }else{
+    console.log("Item successfully deleted");
+  }
+});
+
 });
 
 app.get("/", function(req, res) {
@@ -27,8 +74,25 @@ app.get("/", function(req, res) {
 
   var day = today.toLocaleDateString("en-UK", options);
 
+  let foundItems = [];
+  Item.find({}, function(err, foundItems){
 
-  res.render("list", {dayOfWeek:day, newListItems:newItems});
+  if (foundItems.length === 0){
+    Item.insertMany(defItems, function(err){
+      if(err){
+        console.log(err);
+      }else{
+        console.log("Default items added successfully");
+      }
+    });
+    res.redirect("/");
+  }else{
+    res.render("list", {dayOfWeek:day, newListItems:foundItems});
+  }
+
+  });
+
+
 
 
 

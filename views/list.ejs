@@ -1,28 +1,32 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>To-do List</title>
-    <link rel="stylesheet" href="css/styles.css">
-  </head>
-  <body>
 
-    <div class="box" id="heading">
-      <h1><%=dayOfWeek%></h1>
-    </div>
+<head>
+  <meta charset="utf-8">
+  <title>To-do List</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+  <div class="box" id="heading">
+    <h1><%=dayOfWeek%></h1>
+  </div>
   <div class="box">
-      <%for (var i = 0; i < newListItems.length; i++) {%>
-      <div class="item">
-     <input type="checkbox">
-      <p> <%= newListItems[i] %></p>
-      </div>
-      <%;}%>
+    <form action="/delete" method="post">
 
+      <%newListItems.forEach(function(item){%>
+      <div class="item">
+        <input type="checkbox" name="checkbox" value="<%=item._id%>" onchange="this.form.submit()">
+        <p> <%= item.name %></p>
+      </div>
+      <%});%>
+    </form>
 
 
     <form class="item" action="/" method="post">
-    <input type="text" name="newInput" placeholder="Add a new task">
-    <button type="submit" name="button">+</button>
+      <input type="text" name="newInput" placeholder="Add a new task">
+      <button type="submit" name="button">+</button>
     </form>
 
   </div>
@@ -34,5 +38,6 @@
 
 
 
-  </body>
+</body>
+
 </html>
