@@ -10,31 +10,31 @@
 <body>
 
   <div class="box" id="heading">
-    <h1><%=dayOfWeek%></h1>
+    <h1><%=listTitle%> List</h1>
+    <h2><%=dayOfWeek%></h2>
   </div>
+
+
   <div class="box">
+
+    <% newListItems.forEach(function(item){ %>
+
     <form action="/delete" method="post">
 
-      <%newListItems.forEach(function(item){%>
       <div class="item">
         <input type="checkbox" name="checkbox" value="<%=item._id%>" onchange="this.form.submit()">
         <p> <%= item.name %></p>
       </div>
-      <%});%>
+       <input type="hidden" name="listName" value="<%=listTitle%>">
     </form>
-
+    <%});%>
 
     <form class="item" action="/" method="post">
       <input type="text" name="newInput" placeholder="Add a new task">
-      <button type="submit" name="button">+</button>
+      <button type="submit" name="list" value="<%= listTitle %>">+</button>
     </form>
 
   </div>
-
-
-
-
-
 
 
 
