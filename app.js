@@ -13,7 +13,7 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-mongoose.connect("mongodb://localhost:27017/todolistDB");
+mongoose.connect("mongodb+srv://admin-antonio:Gaarafan92@clusterdb.rna9w.mongodb.net/todolistDB?retryWrites=true&w=majority");
 
 var today = new Date();
 var options = {
