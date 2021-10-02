@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
@@ -13,7 +14,7 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-mongoose.connect("mongodb+srv://admin-antonio:Gaarafan92@clusterdb.rna9w.mongodb.net/todolistDB?retryWrites=true&w=majority");
+mongoose.connect("mongodb+srv://"+ user + ":" + key +"@clusterdb.rna9w.mongodb.net/todolistDB?retryWrites=true&w=majority");
 
 var today = new Date();
 var options = {
@@ -23,8 +24,6 @@ var options = {
 };
 
 var day = today.toLocaleDateString("en-UK", options);
-
-
 
 const itemsSchema = {
   name: String
@@ -157,11 +156,7 @@ app.post("/delete", function(req, res) {
     });
   }
 
-
-
 });
-
-
 
 
 app.listen(3000, function(req, res) {
