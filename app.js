@@ -14,7 +14,10 @@ app.use(express.static("public"));
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-mongoose.connect("mongodb+srv://"+ user + ":" + key +"@clusterdb.rna9w.mongodb.net/todolistDB?retryWrites=true&w=majority");
+
+
+
+mongoose.connect("mongodb+srv://"+ process.env.DB_USER + ":" + process.env.DB_KEY +"@clusterdb.rna9w.mongodb.net/todolistDB?retryWrites=true&w=majority");
 
 var today = new Date();
 var options = {
